@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- bootstrap cdn -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <!-- bootstrap cdn -->
+    <title>Contact List - Anik Sarker</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="my-4">
+            <h4>Create New Contacts</h4>
+            <form action="/contacts" class="form-inline form-row" method="POST" id='my-form'>
+                <div class='form-group col-md-3'>
+                    <input type="text" name="name" id="" placeholder="Name"
+                        class="form-control <%= error.name ? 'is-invalid' : '' %>">
+                    <div class="invalid-feedback">
+                        <%= error.name %>
+                    </div>
+                </div>
+                <div class='form-group col-md-3'>
+                    <input type="text" name="phone" id="" placeholder="Phone"
+                        class="form-control <%= error.phone ? 'is-invalid' : '' %>">
+                    <div class="invalid-feedback">
+                        <%= error.phone %>
+                    </div>
+                </div>
+                <div class='form-group col-md-3'>
+                    <input type="text" name="email" id="" placeholder="Email"
+                        class="form-control <%= error.email ? 'is-invalid' : '' %>">
+                    <div class="invalid-feedback">
+                        <%= error.email %>
+                    </div>
+                </div>
+                <div class='form-group'>
+                    <input type="hidden" name="id">
+                </div>
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </form>
+        </div>
+
+        <div>
+            <h4>Your Contacts</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let contact of contacts) { %>
+                    <tr>
+                        <td><%= contact.name %></td>
+                        <td><%= contact.phone %></td>
+                        <td><%= contact.email %></td>
+                        <td>
+                            <button 
+                                class='btn btn-warning btn-sm edit-btn'
+                                data-name="<%= contact.name %>"
+                                data-email="<%= contact.email %>"
+                                data-phone="<%= contact.phone %>"
+                                data-id="<%= contact._id %>"
+                            >
+                                Edit
+                            </button>
+                            <a href="/contacts/delete/<%= contact._id %>" class='btn btn-danger btn-sm'>
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- bootstrap script -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+        integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
+        crossorigin="anonymous"></script>
+    <!-- bootstrap script -->
+
+    <script>
+        window.onload = () => {
+            let editBtn = document.getElementsByClassName('edit-btn');
+            let form = document.getElementById('my-form');
+
+            [...editBtn].forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    let { name, phone, email, id } = e.target.dataset;
+                    form[0].value = name;
+                    form[1].value = phone;
+                    form[2].value = email;
+                    form[3].value = id;
+                    form[4].value = 'Update';
+                 })
+            })
+        }
+    </script>
+
+</body>
+
+</html>
